@@ -1,0 +1,241 @@
+.page {
+  padding: var(--space-12) 0 var(--space-20);
+}
+
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-padding);
+}
+
+.hero {
+  padding: var(--space-12) 0 var(--space-8);
+}
+
+.heroTitle {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(2.4rem, 6vw, 3.2rem);
+  letter-spacing: 0.02em;
+  margin-bottom: var(--space-3);
+}
+
+.heroSubtitle {
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.section {
+  padding: var(--space-10) 0;
+}
+
+.hidden {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.hiddenLeft {
+  opacity: 0;
+  transform: translateX(-32px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.visibleLeft {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.hiddenRight {
+  opacity: 0;
+  transform: translateX(32px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.visibleRight {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.twoCol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.textCol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.sectionTitle {
+  font-family: var(--font-heading);
+  font-size: 1.9rem;
+  font-style: italic;
+  font-weight: 400;
+  margin-bottom: var(--space-2);
+}
+
+.p {
+  color: var(--color-text-secondary);
+  line-height: 1.85;
+  font-size: 1rem;
+}
+
+.imageCol {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: var(--color-gray-50);
+  border: 1px solid var(--color-border-light);
+}
+
+.imageCol img {
+  width: 100%;
+  height: 100%;
+  max-height: 420px;
+  object-fit: cover;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+.card {
+  background: #fff;
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+}
+
+.cardTitle {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.35rem;
+  margin-bottom: var(--space-3);
+}
+
+.cardText {
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+  font-size: 0.98rem;
+}
+
+.numbers {
+  background: var(--color-gray-50);
+  border-top: 1px solid var(--color-border-light);
+  border-bottom: 1px solid var(--color-border-light);
+  padding: var(--space-12) 0;
+}
+
+.numbersGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.numberCard {
+  border-radius: var(--radius-xl);
+  background: #fff;
+  border: 1px solid var(--color-border-light);
+  padding: var(--space-5);
+  text-align: left;
+  box-shadow: var(--shadow-sm);
+}
+
+.numberValue {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.65rem;
+  margin-bottom: var(--space-2);
+}
+
+.numberLabel {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+}
+
+.cta {
+  padding: var(--space-16) 0 var(--space-20);
+}
+
+.ctaBox {
+  background: var(--color-black);
+  color: #fff;
+  padding: var(--space-10) var(--container-padding);
+  border-radius: var(--radius-xl);
+  text-align: center;
+}
+
+.ctaTitle {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.8rem, 5vw, 2.4rem);
+  margin-bottom: var(--space-6);
+}
+
+.ctaBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 220px;
+  padding: 0.95rem 1.1rem;
+  border: 1px solid #fff;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: var(--font-medium);
+  background: transparent;
+}
+
+.ctaBtn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+@media (min-width: 900px) {
+  .page {
+    padding: var(--space-16) 0 var(--space-24);
+  }
+
+  .twoCol {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-10);
+  }
+
+  .textCol {
+    flex: 1;
+  }
+
+  .imageCol {
+    flex: 1;
+    height: 440px;
+  }
+
+  .cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .numbersGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

@@ -1,0 +1,132 @@
+.section {
+  background: #000;
+  color: #fff;
+  padding: var(--space-16) 0;
+}
+
+.inner {
+  padding: 0 var(--container-padding);
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.hidden {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-weight: 400;
+  text-align: center;
+  font-size: 2rem;
+  letter-spacing: 0.01em;
+}
+
+.subtitle {
+  margin: 0 auto;
+  max-width: 520px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.form {
+  margin-top: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.field {
+  width: 100%;
+  max-width: 480px;
+}
+
+.input {
+  width: 100%;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  color: #fff;
+  padding: 0.95rem 1rem;
+  border-radius: 999px;
+  outline: none;
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.button {
+  width: 100%;
+  max-width: 480px;
+  border-radius: 999px;
+  padding: 0.95rem 1rem;
+  background: #fff;
+  color: #000;
+  font-weight: var(--font-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.error {
+  color: #ffb3b3;
+  text-align: center;
+  font-size: var(--text-sm);
+}
+
+.success {
+  color: #bff3c8;
+  text-align: center;
+  font-size: var(--text-sm);
+}
+
+.privacy {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.82rem;
+  margin-top: var(--space-2);
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: 5rem 0;
+  }
+
+  .title {
+    font-size: 2.8rem;
+  }
+
+  .subtitle {
+    font-size: 0.98rem;
+  }
+
+  .form {
+    flex-direction: row;
+    justify-content: center;
+    gap: var(--space-4);
+  }
+
+  .field {
+    flex: 1;
+  }
+
+  .button {
+    width: auto;
+    max-width: none;
+    min-width: 160px;
+  }
+}

@@ -1,0 +1,109 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal {
+  width: 100%;
+  background: #fff;
+  border-top-left-radius: var(--radius-xl, 12px);
+  border-top-right-radius: var(--radius-xl, 12px);
+  padding: 1.1rem 1rem 1rem;
+  box-shadow: var(--shadow-lg, 0 8px 24px rgba(0, 0, 0, 0.12));
+  position: relative;
+}
+
+.clickCatcher {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  color: var(--color-text-primary);
+}
+
+.closeBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+}
+
+.sub {
+  margin-top: 0.5rem;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.sizeGrid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.sizeBtn {
+  border-radius: var(--radius-md, 4px);
+  border: 1px solid var(--color-border);
+  background: #fff;
+  padding: 0.75rem 0.35rem;
+  color: var(--color-text-primary);
+  font-weight: var(--font-medium, 500);
+  font-size: 0.9rem;
+}
+
+.sizeBtn:active {
+  transform: translateY(1px);
+}
+
+.footer {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.secondaryBtn {
+  border-radius: 999px;
+  padding: 0.8rem 1.1rem;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-weight: var(--font-medium, 500);
+}
+
+/* Desktop: center modal */
+@media (min-width: 768px) {
+  .backdrop {
+    align-items: center;
+  }
+  .modal {
+    width: 520px;
+    border-top-left-radius: var(--radius-xl, 12px);
+    border-top-right-radius: var(--radius-xl, 12px);
+    border-radius: var(--radius-xl, 12px);
+    padding: 1.2rem 1.2rem 1.1rem;
+  }
+  .sizeGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

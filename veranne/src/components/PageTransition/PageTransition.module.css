@@ -1,0 +1,62 @@
+/* PageTransition.module.css */
+
+/* Fade out: página atual some com scale down suave */
+@keyframes pageExit {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.98) translateY(-8px);
+    filter: blur(2px);
+  }
+}
+
+/* Fade in: nova página surge com scale up */
+@keyframes pageEnter {
+  0% {
+    opacity: 0;
+    transform: scale(1.01) translateY(12px);
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0px);
+  }
+}
+
+/* Transição especial para produto */
+@keyframes productPageEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.99);
+    filter: blur(3px);
+  }
+  60% {
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0px);
+  }
+}
+
+.transition {
+  width: 100%;
+}
+
+.fadeOut {
+  animation: pageExit 0.3s ease forwards;
+}
+
+.fadeIn {
+  animation: pageEnter 0.4s ease forwards;
+}
+
+.fadeInProduct {
+  animation: productPageEnter 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

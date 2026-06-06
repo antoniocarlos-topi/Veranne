@@ -1,0 +1,48 @@
+.section {
+  padding: var(--space-20) 0;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.65rem, 5vw, 2.1rem);
+  font-weight: 400;
+  text-align: center;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  margin-bottom: var(--space-10);
+}
+
+.hidden {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.ctaWrap {
+  display: flex;
+  justify-content: center;
+  padding-top: var(--space-8);
+}
+
+.ctaBtn {
+  border: 1px solid #000;
+  background: transparent;
+  color: #000;
+  padding: 0.95rem 1.25rem;
+  font-weight: var(--font-medium);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 0;
+}

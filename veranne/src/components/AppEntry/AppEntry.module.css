@@ -1,0 +1,496 @@
+/* ============================================================
+   VERANNE — AppEntry Styles
+   Fluxo de entrada elegante: Intro → Login → Boas-vindas
+   ============================================================ */
+
+/* ─── Tela base ─────────────────────────────────────────── */
+.screen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff; /* Fundo mais premium branco puro */
+  overflow-y: auto;
+}
+
+/* ─── Animações de transição de tela ────────────────────── */
+@keyframes screenFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes screenFadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+.screenFadeIn {
+  animation: screenFadeIn 0.4s ease forwards;
+}
+
+.screenFadeOut {
+  animation: screenFadeOut 0.4s ease forwards;
+  pointer-events: none;
+}
+
+/* ─── INTRO ──────────────────────────────────────────────── */
+.introScreen {
+  background: #ffffff;
+}
+
+@keyframes logoFadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1.0);  }
+}
+
+@keyframes logoFadeOut {
+  from { opacity: 1; transform: scale(1.0);  }
+  to   { opacity: 0; transform: scale(1.05); }
+}
+
+.introLogo {
+  max-width: 320px;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  opacity: 0;
+}
+
+.introLogo.fadeIn {
+  animation: logoFadeIn 0.8s ease-out 0.3s forwards;
+}
+
+.introLogo.fadeOut {
+  animation: logoFadeOut 0.6s ease-in forwards;
+}
+
+@media (max-width: 768px) {
+  .introLogo {
+    max-width: 260px;
+  }
+}
+
+@media (max-width: 480px) {
+  .introLogo {
+    max-width: 200px;
+  }
+}
+
+/* ─── LOGIN & REDESIGN ───────────────────────────────────── */
+.loginScreen {
+  background-color: #E2E2E2;
+  background-image: url('../../../image/bg_login.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  flex-direction: column;
+  padding: 2rem 1rem;
+  min-height: 100vh;
+}
+
+.loginCard {
+  width: 100%;
+  max-width: 420px;
+  margin: auto;
+  padding: 48px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 2px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Logo area (Login/Cadastro) */
+.loginLogoArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.loginLogotipo {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+  margin-bottom: 16px;
+}
+
+.loginTitle {
+  font-family: var(--font-heading);
+  font-size: 26px;
+  font-weight: 400;
+  color: #1a1a1a;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.loginSubtitle {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #888888;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+/* Painéis de formulário */
+.formPanel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.formVisible {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.formHidden {
+  display: none;
+}
+
+/* ─── Campos Minimalistas (Floating Label) ───────────────── */
+.inputWrapper {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.floatingLabel {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #888;
+  transition: all 200ms ease;
+  pointer-events: none;
+}
+
+.input:focus ~ .floatingLabel,
+.input:not(:placeholder-shown) ~ .floatingLabel,
+.hasValue .floatingLabel,
+.input:-webkit-autofill ~ .floatingLabel {
+  top: -16px;
+  font-size: 9px;
+  color: #000;
+}
+
+.input {
+  border: none;
+  border-bottom: 1px solid #D0D0D0;
+  border-radius: 0;
+  padding: 12px 0;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--color-text-primary);
+  width: 100%;
+  outline: none;
+  transition: border-color 200ms ease;
+}
+
+.input:focus {
+  border-bottom-color: #000000;
+}
+
+/* Placeholder invisível para o hack do floating label css puro (opcional, usando :not(:placeholder-shown)) */
+.input::placeholder {
+  color: transparent;
+}
+
+.inputError {
+  border-bottom-color: #C62828 !important;
+}
+
+.fieldError {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: #C62828;
+  display: block;
+  margin-top: 4px;
+}
+
+.forgotLink {
+  position: absolute;
+  right: 0;
+  top: -16px; /* Alinhado com a label flutuando */
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 500;
+  color: #C9A96E; /* Dourado suave */
+  text-decoration: none;
+  transition: opacity 200ms ease;
+}
+
+.forgotLink:hover {
+  opacity: 0.7;
+}
+
+/* ─── Botões ──────────────────────────────────────────────── */
+.btnPrimary {
+  background: #000;
+  color: #fff;
+  height: 52px;
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 2px solid #000;
+  cursor: pointer;
+  transition: all 250ms ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.btnPrimary:hover:not(:disabled) {
+  background: transparent;
+  color: #000;
+}
+
+.btnPrimary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  background: #333;
+  border-color: #333;
+  color: #fff;
+}
+
+.btnOutline {
+  background: transparent;
+  color: #000;
+  height: 52px;
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 1px solid #000;
+  cursor: pointer;
+  transition: all 250ms ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btnOutline:hover {
+  background: #000;
+  color: #fff;
+}
+
+/* ─── Divisor OU ─────────────────────────────────────────── */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 24px 0;
+  color: #888888;
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.dividerLine {
+  flex: 1;
+  height: 1px;
+  background: #E8E8E8;
+}
+
+/* ─── Novo por aqui ──────────────────────────────────────── */
+.newUserSection {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.newUserText {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: #888888;
+}
+
+.createAccountLink {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #C9A96E;
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+  cursor: pointer;
+  transition: opacity 200ms;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+
+.createAccountLink:hover {
+  opacity: 0.7;
+}
+
+/* ─── Rodapé do Login ────────────────────────────────────── */
+.loginFooter {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.footerLogo {
+  height: 24px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.8;
+}
+
+.footerLinks {
+  display: flex;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: #888888;
+}
+
+.footerLink {
+  color: inherit;
+  text-decoration: none;
+  transition: color 200ms ease;
+}
+
+.footerLink:hover {
+  color: #000;
+}
+
+.footerCopy {
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: #A0A0A0;
+  text-align: center;
+}
+
+/* ─── Spinner ────────────────────────────────────────────── */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* ─── BOAS-VINDAS ────────────────────────────────────────── */
+.welcomeScreen {
+  background: #ffffff;
+  flex-direction: column;
+}
+
+.welcomeContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.welcomeLogo {
+  max-width: 320px;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.welcomeText {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: 22px;
+  font-weight: 400;
+  color: #1a1a1a;
+  letter-spacing: 0.05em;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.welcomeName {
+  font-style: italic;
+}
+
+@keyframes fadeInUpAnim {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fadeInUp {
+  animation: fadeInUpAnim 0.7s ease-out 0.1s both;
+}
+
+.fadeInUpDelay {
+  animation: fadeInUpAnim 0.5s ease-out 0.6s both;
+}
+
+/* Animação em Stagger dos itens do formulário */
+@keyframes staggerFadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.staggerItem {
+  animation: staggerFadeUp 0.6s ease-out backwards;
+}
+
+.stagger1 { animation-delay: 0.1s; }
+.stagger2 { animation-delay: 0.18s; }
+.stagger3 { animation-delay: 0.26s; }
+.stagger4 { animation-delay: 0.34s; }
+.stagger5 { animation-delay: 0.42s; }
+.stagger6 { animation-delay: 0.50s; }
+
+/* Mobile ajustado */
+@media (max-width: 768px) {
+  .welcomeText {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcomeLogo {
+    max-width: 200px;
+  }
+  
+  .loginCard {
+    padding: 36px 24px;
+    border: none;
+    box-shadow: none;
+  }
+
+  .loginScreen {
+    padding: 0;
+    background-image: none;
+  }
+}

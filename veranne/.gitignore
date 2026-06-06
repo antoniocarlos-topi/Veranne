@@ -1,0 +1,27 @@
+# Dependências
+node_modules/
+
+# Build
+dist/
+dist-ssr/
+
+# Credenciais — NUNCA subir para o GitHub
+.env
+.env.local
+.env.production
+.env.development
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Vite
+*.local

@@ -1,0 +1,201 @@
+.wrap {
+  padding: var(--space-12) 0;
+}
+
+.header {
+  padding: 0 var(--container-padding);
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  font-weight: var(--font-medium);
+}
+
+.hidden {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.subtitle {
+  margin-top: var(--space-3);
+  color: var(--color-text-secondary);
+}
+
+.controls {
+  margin-top: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.searchWrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.label {
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-secondary);
+  font-weight: var(--font-semibold);
+}
+
+.search {
+  width: 100%;
+  padding: 0.95rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: #fff;
+  color: var(--color-text-primary);
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.catRow {
+  display: flex;
+  gap: 0.6rem;
+  overflow: auto;
+  padding-bottom: 0.35rem;
+}
+
+.catBtn {
+  flex: 0 0 auto;
+  padding: 0.7rem 0.95rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-weight: var(--font-medium);
+  letter-spacing: 0.02em;
+}
+
+.catActive {
+  background: #000;
+  border-color: #000;
+  color: #fff;
+}
+
+.sortWrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.select {
+  width: 100%;
+  padding: 0.95rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: #fff;
+}
+
+.count {
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: var(--text-base);
+}
+
+.countStrong {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.15rem;
+  color: var(--color-text-primary);
+}
+
+.priceFilter {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.priceInput {
+  width: 80px;
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  background: #fff;
+}
+
+.priceBtn {
+  padding: 0.75rem 1rem;
+  background: #000;
+  color: #fff;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  transition: background var(--transition-fast);
+}
+
+.priceBtn:hover {
+  background: var(--color-primary-hover);
+}
+
+.viewToggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.viewBtn {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  background: #fff;
+  transition: all var(--transition-fast);
+}
+
+.viewBtn:hover {
+  background: var(--color-surface);
+  color: #000;
+}
+
+.viewActive {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+.viewActive:hover {
+  background: #000;
+  color: #fff;
+}
+
+@media (min-width: 768px) {
+  .header {
+    padding: 0 var(--container-padding);
+  }
+  .controls {
+    margin-top: var(--space-10);
+  }
+  .row {
+    flex-direction: row;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+  }
+  .viewToggle {
+    margin-left: auto;
+  }
+}
+

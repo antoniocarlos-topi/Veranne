@@ -1,0 +1,41 @@
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeOut 0.5s ease 1.5s forwards;
+  pointer-events: none;
+}
+
+.logo {
+  font-family: var(--font-heading);
+  color: #ffffff;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  letter-spacing: 0.15em;
+  opacity: 0;
+  animation: fadeIn 0.8s ease 0.2s forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}

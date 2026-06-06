@@ -1,0 +1,130 @@
+.page {
+  min-height: 100vh;
+  background: var(--color-gray-50);
+  padding: var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  width: 100%;
+  max-width: 520px;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-8);
+  text-align: center;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: var(--font-medium);
+}
+
+.subtitle {
+  margin-top: var(--space-3);
+  color: var(--color-text-secondary);
+}
+
+.shell {
+  min-height: 100vh;
+  background: var(--color-gray-50);
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.sidebar {
+  background: #1a1a1a;
+  color: var(--color-white);
+  padding: var(--space-6) var(--space-5);
+}
+
+.sidebarBrand {
+  font-family: var(--font-heading);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: var(--font-medium);
+  margin-bottom: var(--space-8);
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.menuItem {
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 15px;
+  letter-spacing: 0.02em;
+}
+
+.active {
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+.logout {
+  margin-top: var(--space-6);
+  text-align: left;
+  color: var(--color-white);
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+
+.content {
+  padding: var(--space-8) var(--space-5);
+}
+
+.h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: var(--font-medium);
+}
+
+.cards {
+  margin-top: var(--space-6);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+.statCard {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-6);
+}
+
+.statLabel {
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.statValue {
+  margin-top: var(--space-3);
+  font-size: 28px;
+  font-weight: var(--font-semibold);
+  color: var(--color-text-primary);
+}
+
+@media (min-width: 768px) {
+  .shell {
+    grid-template-columns: 280px 1fr;
+  }
+
+  .content {
+    padding: var(--space-10);
+  }
+
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

@@ -1,0 +1,353 @@
+/* ============================================================
+   VERANNE — Auth Styles (Standalone pages)
+   ============================================================ */
+
+.authContainer {
+  min-height: calc(100vh - var(--header-height));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background-color: #E2E2E2;
+  background-image: url('../../../image/bg_login.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.authCard {
+  width: 100%;
+  max-width: 420px;
+  margin: auto;
+  padding: 48px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 2px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.authLogoArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.authLogotipo {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+  margin-bottom: 16px;
+}
+
+.authTitle {
+  font-family: var(--font-heading);
+  font-size: 26px;
+  font-weight: 400;
+  color: #1a1a1a;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.authSubtitle {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #888888;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.authForm {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Campos Minimalistas (Floating Label) ───────────────── */
+.inputWrapper {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.floatingLabel {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #888;
+  transition: all 200ms ease;
+  pointer-events: none;
+}
+
+.input:focus ~ .floatingLabel,
+.input:not(:placeholder-shown) ~ .floatingLabel,
+.hasValue .floatingLabel,
+.input:-webkit-autofill ~ .floatingLabel {
+  top: -16px;
+  font-size: 9px;
+  color: #000;
+}
+
+.input {
+  border: none;
+  border-bottom: 1px solid #D0D0D0;
+  border-radius: 0;
+  padding: 12px 0;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--color-text-primary);
+  width: 100%;
+  outline: none;
+  transition: border-color 200ms ease;
+}
+
+.input:focus {
+  border-bottom-color: #000000;
+}
+
+.input::placeholder {
+  color: transparent;
+}
+
+.inputErr {
+  border-bottom-color: #C62828 !important;
+}
+
+.fieldErr {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: #C62828;
+  display: block;
+  margin-top: 4px;
+}
+
+.forgotLink {
+  position: absolute;
+  right: 0;
+  top: -16px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 500;
+  color: #C9A96E;
+  text-decoration: none;
+  transition: opacity 200ms ease;
+}
+
+.forgotLink:hover {
+  opacity: 0.7;
+}
+
+/* ─── Botões ──────────────────────────────────────────────── */
+.btnPrimary {
+  background: #000;
+  color: #fff;
+  height: 52px;
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 2px solid #000;
+  cursor: pointer;
+  transition: all 250ms ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.btnPrimary:hover:not(:disabled) {
+  background: transparent;
+  color: #000;
+}
+
+.btnPrimary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  background: #333;
+  border-color: #333;
+  color: #fff;
+}
+
+.btnOutline {
+  background: transparent;
+  color: #000;
+  height: 52px;
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 1px solid #000;
+  cursor: pointer;
+  transition: all 250ms ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.btnOutline:hover {
+  background: #000;
+  color: #fff;
+}
+
+/* ─── Divisor OU ─────────────────────────────────────────── */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 24px 0;
+  color: #888888;
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.dividerLine {
+  flex: 1;
+  height: 1px;
+  background: #E8E8E8;
+}
+
+/* ─── Novo por aqui ──────────────────────────────────────── */
+.newUserSection {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.newUserText {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: #888888;
+}
+
+.createAccountLink {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #C9A96E;
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+  transition: opacity 200ms;
+}
+
+.createAccountLink:hover {
+  opacity: 0.7;
+}
+
+/* ─── Rodapé do Login ────────────────────────────────────── */
+.authFooter {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.footerLogo {
+  height: 24px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.8;
+}
+
+.footerLinks {
+  display: flex;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: #888888;
+}
+
+.footerLink {
+  color: inherit;
+  text-decoration: none;
+  transition: color 200ms ease;
+}
+
+.footerLink:hover {
+  color: #000;
+}
+
+.footerCopy {
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: #A0A0A0;
+  text-align: center;
+}
+
+/* Animações */
+@keyframes staggerFadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.staggerItem {
+  animation: staggerFadeUp 0.6s ease-out backwards;
+}
+
+.stagger1 { animation-delay: 0.1s; }
+.stagger2 { animation-delay: 0.18s; }
+.stagger3 { animation-delay: 0.26s; }
+.stagger4 { animation-delay: 0.34s; }
+.stagger5 { animation-delay: 0.42s; }
+.stagger6 { animation-delay: 0.50s; }
+
+/* ─── Checkbox group (usado em alguns lugares) ────────────── */
+.checkboxGroup {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.checkboxGroup input[type="checkbox"] {
+  margin-top: 2px;
+}
+
+.checkboxGroup label {
+  font-size: 13px;
+  color: #888;
+  line-height: 1.5;
+}
+
+.checkboxGroup a {
+  color: #C9A96E;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+  .authCard {
+    padding: 36px 24px;
+    border: none;
+    box-shadow: none;
+  }
+  .authContainer {
+    background-image: none;
+  }
+}

@@ -1,0 +1,152 @@
+/* ============================================================
+   VERANNE — StaggeredMenu CSS
+   Global CSS for GSAP dynamic classes
+   ============================================================ */
+
+/* Menu overlay and container */
+.staggered-menu-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  pointer-events: none; /* Let clicks pass through when closed */
+}
+
+.staggered-menu-wrapper.is-open {
+  pointer-events: auto;
+}
+
+/* Background pre-layers */
+.sm-prelayer {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  transform: translateX(100%); /* Default to right */
+}
+
+.sm-prelayer:nth-child(1) { background: #F0F0F0 !important; }
+.sm-prelayer:nth-child(2) { background: #E8E8E8 !important; }
+
+/* Main panel */
+.staggered-menu-panel {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: #FFFFFF !important;
+  backdrop-filter: none !important;
+  transform: translateX(100%); /* Default to right */
+  display: flex;
+  flex-direction: column;
+  padding: 80px 40px 40px;
+}
+
+@media (min-width: 480px) {
+  .sm-prelayer, .staggered-menu-panel {
+    width: 400px; /* Fixed width on larger screens, though meant for mobile */
+    right: 0;
+    left: auto;
+  }
+}
+
+/* Items container */
+.sm-items-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+  flex: 1;
+}
+
+.sm-item-wrapper {
+  overflow: hidden; /* For staggered text reveal */
+}
+
+/* Menu items */
+.sm-panel-item {
+  display: inline-block;
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-weight: 400 !important;
+  font-size: clamp(2rem, 8vw, 3rem) !important;
+  letter-spacing: -0.01em !important;
+  text-transform: none !important; /* remover uppercase */
+  color: #000000 !important;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  transform: translateY(100%); /* For reveal animation */
+}
+
+.sm-panel-item:hover {
+  color: #C9A96E !important; /* dourado VERANNE */
+}
+
+/* Socials */
+.sm-socials-container {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow: hidden;
+}
+
+.sm-socials-title {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 10px !important;
+  letter-spacing: 0.15em !important;
+  text-transform: uppercase !important;
+  color: #888 !important;
+  transform: translateY(100%); /* For reveal animation */
+}
+
+.sm-socials-links {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.sm-socials-link-wrapper {
+  overflow: hidden;
+}
+
+.sm-socials-link {
+  display: inline-block;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: #000 !important;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  transform: translateY(100%); /* For reveal animation */
+}
+
+.sm-socials-link:hover {
+  color: #C9A96E !important;
+}
+
+/* Toggle button */
+.sm-toggle-btn {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  z-index: 1001;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #000 !important;
+}
+
+.sm-toggle-line {
+  width: 24px;
+  height: 2px;
+  background-color: currentColor;
+  border-radius: 2px;
+}

@@ -1,0 +1,120 @@
+.section {
+  padding: var(--space-20) 0;
+}
+
+.inner {
+  padding: 0 var(--container-padding);
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.55rem, 6vw, 2rem);
+  font-weight: 400;
+  color: var(--color-text-primary);
+  text-align: center;
+  margin-bottom: var(--space-2);
+}
+
+.subTitle {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  text-align: center;
+  margin-bottom: var(--space-10);
+}
+
+.hidden {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+}
+
+.card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-light);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+}
+
+.stars {
+  display: flex;
+  gap: 0.15rem;
+  margin-bottom: var(--space-3);
+}
+
+.starOn {
+  color: #c9a96e;
+}
+
+.starOff {
+  color: #d9d9d9;
+}
+
+.text {
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  font-size: var(--text-base);
+}
+
+.meta {
+  margin-top: var(--space-5);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: var(--color-gray-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-border-light);
+}
+
+.avatarText {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  color: var(--color-text-primary);
+}
+
+.metaText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.metaName {
+  font-weight: var(--font-medium);
+  color: var(--color-text-primary);
+}
+
+.metaPlace {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: var(--space-24) 0;
+  }
+
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-8);
+  }
+}

@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap');
+@import './variables.css';
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  background-color: var(--color-background);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* UTILITÁRIOS */
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-padding);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+/* ANIMAÇÕES GLOBAIS */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn var(--transition-slow) ease forwards;
+}
+
+/* ─── SCROLL REVEAL — Classes globais de visibilidade bidirecional ─────── */
+
+/* Estado oculto — elemento fora da tela (baixo) */
+.scroll-hidden {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s ease;
+  will-change: opacity, transform;
+}
+
+/* Estado visível */
+.scroll-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s ease;
+  will-change: opacity, transform;
+}
+
+/* Variações laterais */
+.scroll-hidden-left {
+  opacity: 0;
+  transform: translateX(-28px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.scroll-hidden-right {
+  opacity: 0;
+  transform: translateX(28px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.scroll-visible-x {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* ─── STAGGER — Cards aparecem em cascata ───────────────────────────────── */
+.staggerItem {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.staggerItem.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Delays crescentes por posição no grid */
+.staggerItem:nth-child(1) { transition-delay: 0ms; }
+.staggerItem:nth-child(2) { transition-delay: 80ms; }
+.staggerItem:nth-child(3) { transition-delay: 160ms; }
+.staggerItem:nth-child(4) { transition-delay: 240ms; }
+.staggerItem:nth-child(5) { transition-delay: 80ms; }
+.staggerItem:nth-child(6) { transition-delay: 160ms; }
+.staggerItem:nth-child(7) { transition-delay: 240ms; }
+.staggerItem:nth-child(8) { transition-delay: 320ms; }
+
+/* Quando invisível: zerar delay para todos somem juntos */
+.staggerItem.hidden {
+  opacity: 0;
+  transform: translateY(24px);
+  transition-delay: 0ms !important;
+}

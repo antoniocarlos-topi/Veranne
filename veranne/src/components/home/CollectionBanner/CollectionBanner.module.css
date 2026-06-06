@@ -1,0 +1,141 @@
+.section {
+  padding: var(--space-20) 0;
+}
+
+.hidden {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+/* Entrada lateral — esquerda */
+.hiddenLeft {
+  opacity: 0;
+  transform: translateX(-32px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Entrada lateral — direita */
+.hiddenRight {
+  opacity: 0;
+  transform: translateX(32px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Estado visível lateral */
+.visibleX {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  padding: 0 var(--container-padding);
+}
+
+.banner {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  min-height: 260px;
+  text-align: left;
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.01);
+  transition: transform var(--transition-base), filter var(--transition-base);
+  filter: saturate(1.03) contrast(1.03);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.65) 0%,
+    rgba(0, 0, 0, 0.25) 45%,
+    transparent 100%
+  );
+  transition: opacity var(--transition-base);
+}
+
+.content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1.35rem 1.15rem;
+  color: #fff;
+}
+
+.kicker {
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: var(--font-semibold);
+  opacity: 0.9;
+}
+
+.title {
+  margin-top: var(--space-3);
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.link {
+  margin-top: var(--space-5);
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.95;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  width: fit-content;
+}
+
+.banner:hover .bg {
+  transform: scale(1.03);
+}
+
+.banner:hover .overlay {
+  opacity: 0.95;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: var(--space-24) 0;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-8);
+  }
+
+  .banner {
+    min-height: 320px;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+}
