@@ -138,7 +138,7 @@ export default function Product() {
     setTimeout(() => {
       setShowConfetti(false)
       setShowAddedToast(false)
-    }, 2500)
+    }, 3500)
   }
 
   function onWhatsAppClick() {

@@ -4,79 +4,125 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   pointer-events: none;
   z-index: 9999;
   overflow: hidden;
 }
 
-/* Animação de queda */
-@keyframes confettiFall {
+.ring {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 2px solid #D4AF37;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: ringExpand 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+  box-shadow: 0 0 15px #D4AF37, inset 0 0 15px #D4AF37;
+}
+
+@keyframes ringExpand {
   0% {
-    transform: 
-      translateY(-20px) 
-      translateX(0) 
-      rotate(0deg);
+    width: 0;
+    height: 0;
     opacity: 1;
+    border-width: 6px;
   }
   100% {
-    transform: 
-      translateY(100vh) 
-      translateX(var(--x)) 
-      rotate(var(--rotate));
+    width: 300px;
+    height: 300px;
+    opacity: 0;
+    border-width: 1px;
+  }
+}
+
+.glow {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(212,175,55,0.6) 0%, rgba(212,175,55,0) 70%);
+  transform: translate(-50%, -50%) scale(0);
+  animation: glowPulse 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+
+@keyframes glowPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.8);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.5);
     opacity: 0;
   }
 }
 
-/* Animação de explosão do centro */
-@keyframes confettiBurst {
+@keyframes magicalExplosion {
   0% {
-    transform: 
-      translateY(0) 
-      translateX(0) 
-      scale(0) 
-      rotate(0deg);
-    opacity: 1;
+    transform: translate(-50%, -50%) scale(0) rotate(var(--rotate));
+    opacity: 0;
   }
-  20% {
-    transform: 
-      translateY(-60px) 
-      translateX(var(--x)) 
-      scale(1) 
-      rotate(calc(var(--rotate) * 0.3));
+  10% {
     opacity: 1;
+    transform: translate(calc(-50% + var(--tx) * 0.3), calc(-50% + var(--ty) * 0.3)) scale(calc(var(--scale) * 1.4)) rotate(var(--rotate));
+  }
+  40% {
+    opacity: 1;
+    transform: translate(calc(-50% + var(--tx) * 0.8), calc(-50% + var(--ty) * 0.8)) scale(var(--scale)) rotate(calc(var(--rotate) + (var(--end-rotate) * 0.4)));
   }
   100% {
-    transform: 
-      translateY(60vh) 
-      translateX(calc(var(--x) * 2)) 
-      scale(0.5) 
-      rotate(var(--rotate));
+    transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty) + var(--drop, 500px))) scale(0) rotate(calc(var(--rotate) + var(--end-rotate)));
     opacity: 0;
   }
 }
 
 .piece {
   position: absolute;
-  top: 30%; /* começa do centro-topo da tela */
-  width: 8px;
-  height: 8px;
-  animation: confettiBurst forwards ease-in;
+  background: var(--color);
+  transform-origin: center center;
+  animation: magicalExplosion var(--duration) cubic-bezier(0.15, 0.8, 0.25, 1) forwards;
+  animation-delay: var(--delay);
   will-change: transform, opacity;
+  box-shadow: 0 0 6px var(--color), 0 0 12px var(--color);
+  opacity: 0; 
+}
+
+.dust {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.star {
+  width: 20px;
+  height: 20px;
+  background: var(--color);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+.diamond {
+  width: 16px;
+  height: 16px;
+  background: var(--color);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 }
 
 .circle {
+  width: 14px;
+  height: 14px;
+  background: var(--color);
   border-radius: 50%;
-  width: 7px; height: 7px;
 }
 
-.square {
-  border-radius: 1px;
-  width: 8px; height: 8px;
-}
-
-.line {
-  width: 2px; height: 12px;
-  border-radius: 1px;
+.ribbon {
+  width: 8px;
+  height: 22px;
+  background: var(--color);
+  border-radius: 3px;
 }

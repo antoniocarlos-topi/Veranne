@@ -45,9 +45,9 @@ export default function ProductGrid({
           className={
             useStagger
               ? `staggerItem ${staggerVisible ? 'visible' : 'hidden'}`
-              : 'fade-in'
+              : (i < 8 ? 'fade-in' : 'fade-in-fast')
           }
-          style={useStagger ? undefined : { animationDelay: `${i * 75}ms` }}
+          style={useStagger ? undefined : { animationDelay: i < 8 ? `${i * 75}ms` : '0ms' }}
         >
           <ProductCard product={p} viewMode={viewMode} />
         </div>

@@ -32,17 +32,28 @@ export function CouponsProvider({ children }) {
     }
   }
 
-  const addCoupon = useCallback(async (code, type, value, minOrder) => {
+  const addCoupon = useCallback(async (data) => {
+    const code = typeof data === 'object' ? data.code : arguments[0]
+    const type = typeof data === 'object' ? data.type : arguments[1]
+    const value = typeof data === 'object' ? data.value : arguments[2]
+    const minOrder = typeof data === 'object' ? data.minOrder : arguments[3]
+    const maxUses = typeof data === 'object' ? data.maxUses : null
+    const expiryDate = typeof data === 'object' ? data.expiryDate : null
+
     const newCoupon = {
       code: code.toUpperCase(),
       type, // 'percent' | 'fixed'
       value: Number(value),
       min_order: Number(minOrder) || 0,
+      max_uses: maxUses ? Number(maxUses) : null,
+      expiry_date: expiryDate || null,
       active: true,
       usage_count: 0
     }
     const saved = await insertCoupon(newCoupon)
-    setCoupons(prev => [saved, ...prev])
+    if (saved) {
+      setCoupons(prev => [saved, ...prev])
+    }
   }, [])
 
   const updateCoupon = useCallback(async (id, updates) => {

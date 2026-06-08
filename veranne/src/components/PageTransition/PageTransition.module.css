@@ -51,12 +51,15 @@
 
 .fadeOut {
   animation: pageExit 0.3s ease forwards;
+  will-change: opacity, transform, filter;
 }
 
 .fadeIn {
   animation: pageEnter 0.4s ease forwards;
+  will-change: opacity, transform, filter;
 }
 
 .fadeInProduct {
   animation: productPageEnter 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity, transform, filter;
 }

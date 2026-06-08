@@ -24,39 +24,42 @@ function CartIcon() {
 
 export default function Cart() {
   const navigate = useNavigate()
-  const { items, totalPrice, clearCart, updateQuantity, removeFromCart } = useCart()
+  const { 
+    items, 
+    subtotal, 
+    totalPrice, 
+    discount: contextDiscount,
+    appliedCoupon, 
+    setAppliedCoupon,
+    clearCart, 
+    updateQuantity, 
+    removeFromCart 
+  } = useCart()
   const { validateCoupon, useCoupon } = useCoupons()
   const { config } = useConfig()
   
   const [toast, setToast] = useState(null)
   
-  const [couponCode, setCouponCode] = useState('')
+  const [couponCode, setCouponCode] = useState(appliedCoupon?.code || '')
   const [couponError, setCouponError] = useState('')
-  const [appliedCoupon, setApplied] = useState(null)
-  const [discount, setDiscount] = useState(0)
 
   function handleApplyCoupon() {
     setCouponError('')
     if (!couponCode.trim()) {
-      setApplied(null)
-      setDiscount(0)
+      setAppliedCoupon(null)
       return
     }
-    const result = validateCoupon(couponCode, totalPrice || 0)
+    const result = validateCoupon(couponCode, subtotal || 0)
     if (!result.valid) {
       setCouponError(result.message)
-      setApplied(null)
-      setDiscount(0)
+      setAppliedCoupon(null)
       return
     }
-    setApplied(result.coupon)
-    setDiscount(result.discount)
+    setAppliedCoupon(result.coupon)
   }
 
   const computed = useMemo(() => {
     const totalItems = items.reduce((sum, it) => sum + (it.quantity || 0), 0)
-    const subtotal = totalPrice || 0
-    const finalTotal = Math.max(0, subtotal - discount)
     const remaining = Math.max(0, config.freeShippingAbove - subtotal)
     const progress = config.freeShippingAbove <= 0 ? 1 : Math.min(1, subtotal / config.freeShippingAbove)
 
@@ -66,9 +69,9 @@ export default function Cart() {
       remaining,
       progress,
       qualifiesFreeShipping: subtotal >= config.freeShippingAbove,
-      finalTotal,
+      finalTotal: totalPrice,
     }
-  }, [items, totalPrice, discount, config.freeShippingAbove])
+  }, [items, subtotal, totalPrice, config.freeShippingAbove])
 
   const whatsappMessage = useMemo(() => {
     const safeItems = items || []
@@ -87,14 +90,14 @@ export default function Cart() {
       lines.join('\n')
 
     if (appliedCoupon) {
-      msg += `\n\nCupom aplicado: ${appliedCoupon.code} (-R$ ${discount.toFixed(2).replace('.', ',')})`
+      msg += `\n\nCupom aplicado: ${appliedCoupon.code} (-R$ ${contextDiscount.toFixed(2).replace('.', ',')})`
     }
     
     msg += `\n\n*Total: R$ ${total}*` +
       `\n\nAguardo instruções para pagamento via Pix. Obrigada!`
       
     return msg
-  }, [items, computed.finalTotal, appliedCoupon, discount, config.storeName])
+  }, [items, computed.finalTotal, appliedCoupon, contextDiscount, config.storeName])
 
   function onWhatsApp() {
     if (appliedCoupon) {
@@ -145,11 +148,18 @@ export default function Cart() {
                   return (
                     <div key={`${pid}-${size}-${it.selectedColor?.name || 'none'}`} className={styles.item}>
                       <div className={styles.itemImage}>
-                        {product.image ? (
-                          <img src={product.image} alt={product.name || 'Produto'} />
-                        ) : (
-                          <div className={styles.itemImagePlaceholder} aria-hidden="true" />
-                        )}
+                        {(() => {
+                          const imgSrc = product?.images?.[0] || product?.image || null
+                          return imgSrc ? (
+                            <img 
+                              src={imgSrc} 
+                              alt={product.name || 'Produto'} 
+                              onError={e => { e.target.style.display = 'none' }} 
+                            />
+                          ) : (
+                            <div className={styles.itemImagePlaceholder} aria-hidden="true" />
+                          )
+                        })()}
                       </div>
 
                       <div className={styles.itemBody}>
@@ -268,7 +278,7 @@ export default function Cart() {
                   {couponError && <div className={styles.couponError}>{couponError}</div>}
                   {appliedCoupon && (
                     <div className={styles.couponSuccess}>
-                      Cupom {appliedCoupon.code} aplicado! (-R$ {formatBRL(discount)})
+                      Cupom {appliedCoupon.code} aplicado! (-R$ {formatBRL(contextDiscount)})
                     </div>
                   )}
                 </div>

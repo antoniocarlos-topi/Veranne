@@ -160,6 +160,7 @@ export function CartProvider({ children }) {
     updateQuantity,
     clearCart,
     appliedCoupon,
+    setAppliedCoupon,
     applyCoupon,
     removeCoupon,
     getDiscount,

@@ -320,13 +320,23 @@ export default function Header() {
               <Badge count={totalFavorites} />
             </Link>
 
-            {/* Carrinho */}
             <div
               className={styles.cartWrap}
-              onMouseEnter={() => setCartOpen(true)}
-              onMouseLeave={() => setCartOpen(false)}
+              onMouseEnter={() => { if (window.innerWidth >= 768) setCartOpen(true) }}
+              onMouseLeave={() => { if (window.innerWidth >= 768) setCartOpen(false) }}
             >
-              <Link to="/carrinho" className={styles.iconBtn} aria-label="Carrinho">
+              <button 
+                type="button" 
+                className={styles.iconBtn} 
+                aria-label="Carrinho"
+                onClick={() => {
+                  if (window.innerWidth < 768) {
+                    setCartOpen(!cartOpen)
+                  } else {
+                    navigate('/carrinho')
+                  }
+                }}
+              >
                 <Icon className={styles.icon}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                     <path
@@ -357,7 +367,7 @@ export default function Header() {
                   </svg>
                 </Icon>
                 <Badge count={totalItems} />
-              </Link>
+              </button>
 
               <div className={`${styles.cartDropdown} ${cartOpen && totalItems > 0 ? styles.cartDropdownOpen : ''}`}>
                 <div className={styles.cartDropdownHeader}>
@@ -369,8 +379,8 @@ export default function Header() {
                   {items.slice(0, 3).map((it, idx) => (
                     <div key={idx} className={styles.cartLine}>
                       <div className={styles.cartThumb} aria-hidden="true">
-                        {it?.product?.imageUrl ? (
-                          <img src={it.product.imageUrl} alt="" />
+                        {it?.product?.images?.[0] ? (
+                          <img src={it.product.images[0]} alt="" />
                         ) : null}
                       </div>
                       <div className={styles.cartLineMeta}>
@@ -391,9 +401,16 @@ export default function Header() {
                 </div>
 
                 <div className={styles.cartDropdownFooter}>
-                  <Link to="/carrinho" className={styles.cartGoBtn}>
+                  <button 
+                    type="button"
+                    onClick={() => {
+                      setCartOpen(false);
+                      navigate('/carrinho');
+                    }} 
+                    className={styles.cartGoBtn}
+                  >
                     Ver carrinho
-                  </Link>
+                  </button>
                 </div>
               </div>
             </div>

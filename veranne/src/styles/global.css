@@ -80,6 +80,12 @@ input, textarea, select {
 
 .fade-in {
   animation: fadeIn var(--transition-slow) ease forwards;
+  will-change: opacity, transform;
+}
+
+.fade-in-fast {
+  animation: fadeIn var(--transition-fast) ease forwards;
+  will-change: opacity, transform;
 }
 
 /* ─── SCROLL REVEAL — Classes globais de visibilidade bidirecional ─────── */
