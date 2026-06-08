@@ -32,7 +32,7 @@ function parseQuery(search) {
   const params = new URLSearchParams(search)
   return {
     q: params.get('q') || '',
-    category: params.get('category') || 'todos',
+    category: params.get('categoria') || 'todos',
     sort: params.get('sort') || 'featured',
     min: params.get('min') || '',
     max: params.get('max') || '',
@@ -42,7 +42,7 @@ function parseQuery(search) {
 function stringifyQuery({ q, category, sort, min, max }) {
   const params = new URLSearchParams()
   if (q) params.set('q', q)
-  if (category && category !== 'todos') params.set('category', category)
+  if (category && category !== 'todos') params.set('categoria', category)
   if (sort && sort !== 'featured') params.set('sort', sort)
   if (min) params.set('min', min)
   if (max) params.set('max', max)

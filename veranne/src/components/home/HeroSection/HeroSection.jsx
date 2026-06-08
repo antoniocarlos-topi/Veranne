@@ -1,70 +1,147 @@
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
+import { Link } from 'react-router-dom'
+import { useHomepage } from '../../../context/HomepageContext'
 import styles from './HeroSection.module.css'
 
-import { useHomepage } from '../../../context/HomepageContext.jsx'
+const SLIDE_INTERVAL = 5000 // 5 segundos
 
 export function HeroSection() {
-  const [showIndicator, setShowIndicator] = useState(true)
-  const [scrollY, setScrollY] = useState(0)
-  const navigate = useNavigate()
   const { homepage } = useHomepage()
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  const intervalRef = useRef(null)
 
+  const images = homepage.heroImages?.length > 0
+    ? homepage.heroImages
+    : [homepage.heroBannerUrl]
+
+  // Avançar slide
+  const nextSlide = useCallback(() => {
+    if (isTransitioning) return
+    setIsTransitioning(true)
+    setCurrentIndex(prev =>
+      prev === images.length - 1 ? 0 : prev + 1
+    )
+    setTimeout(() => setIsTransitioning(false), 800)
+  }, [images.length, isTransitioning])
+
+  // Voltar slide
+  const prevSlide = useCallback(() => {
+    if (isTransitioning) return
+    setIsTransitioning(true)
+    setCurrentIndex(prev =>
+      prev === 0 ? images.length - 1 : prev - 1
+    )
+    setTimeout(() => setIsTransitioning(false), 800)
+  }, [images.length, isTransitioning])
+
+  // Ir para slide específico
+  const goToSlide = useCallback((index) => {
+    if (isTransitioning || index === currentIndex) return
+    setIsTransitioning(true)
+    setCurrentIndex(index)
+    setTimeout(() => setIsTransitioning(false), 800)
+  }, [currentIndex, isTransitioning])
+
+  // Autoplay
   useEffect(() => {
-    function onScroll() {
-      const y = window.scrollY || 0
-      setShowIndicator(y < 40)
-      setScrollY(y)
-    }
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+    if (images.length <= 1) return
+    intervalRef.current = setInterval(nextSlide, SLIDE_INTERVAL)
+    return () => clearInterval(intervalRef.current)
+  }, [nextSlide, images.length])
+
+  // Pausar ao hover
+  function handleMouseEnter() {
+    clearInterval(intervalRef.current)
+  }
+  function handleMouseLeave() {
+    if (images.length <= 1) return
+    intervalRef.current = setInterval(nextSlide, SLIDE_INTERVAL)
+  }
 
   return (
-    <section className={styles.hero} aria-label="Hero VERANNE">
-      <div 
-        className={styles.bg} 
-        style={{ 
-          backgroundImage: `url(${homepage.heroBannerUrl})`,
-          transform: `scale(1.02) translateY(${scrollY * 0.35}px)`
-        }} 
-      />
+    <section
+      className={styles.hero}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* Slides de imagem */}
+      <div className={styles.slidesWrapper}>
+        {images.map((img, index) => (
+          <div
+            key={index}
+            className={`${styles.slide} ${
+              index === currentIndex ? styles.slideActive : ''
+            }`}
+            style={{ backgroundImage: `url(${img})` }}
+            aria-hidden={index !== currentIndex}
+          />
+        ))}
+      </div>
+
+      {/* Overlay gradiente */}
       <div className={styles.overlay} />
 
-      <div className={styles.inner}>
-        <div className={styles.content}>
-          <div className={`${styles.label} ${styles.fadeInUp}`}>
-            {homepage.heroLabel}
-          </div>
-
-          <h1 className={`${styles.title} ${styles.fadeInUp}`}>
-            {homepage.heroTitle}
-          </h1>
-
-          <p className={`${styles.subtitle} ${styles.fadeInUp}`}>
-            {homepage.heroSubtitle}
-          </p>
-
-          <div className={`${styles.actions} ${styles.fadeInUp}`}>
-            <button
-              className={styles.primaryBtn}
-              onClick={() => navigate('/loja')}
-              type="button"
-            >
-              Comprar Agora
-            </button>
-            <button className={styles.outlineBtn} onClick={() => navigate('/loja')} type="button">
-              Ver Coleção
-            </button>
-          </div>
+      {/* Conteúdo do hero */}
+      <div className={styles.content}>
+        <span className={styles.label}>
+          {homepage.heroLabel}
+        </span>
+        <h1 className={styles.title}>
+          {homepage.heroTitle}
+        </h1>
+        <p className={styles.subtitle}>
+          {homepage.heroSubtitle}
+        </p>
+        <div className={styles.buttons}>
+          <Link to="/loja" className={styles.btnPrimary}>
+            Comprar Agora
+          </Link>
+          <Link to="/loja" className={styles.btnSecondary}>
+            Ver Coleção
+          </Link>
         </div>
+      </div>
 
-        {showIndicator ? (
-          <div className={styles.scrollIndicator} aria-hidden="true">
-            <div className={styles.chevron} />
-          </div>
-        ) : null}
+      {/* Setas de navegação — apenas se houver mais de 1 imagem */}
+      {images.length > 1 && (
+        <>
+          <button
+            className={`${styles.arrow} ${styles.arrowLeft}`}
+            onClick={prevSlide}
+            aria-label="Imagem anterior"
+          >
+            ‹
+          </button>
+          <button
+            className={`${styles.arrow} ${styles.arrowRight}`}
+            onClick={nextSlide}
+            aria-label="Próxima imagem"
+          >
+            ›
+          </button>
+        </>
+      )}
+
+      {/* Dots indicadores */}
+      {images.length > 1 && (
+        <div className={styles.dots}>
+          {images.map((_, index) => (
+            <button
+              key={index}
+              className={`${styles.dot} ${
+                index === currentIndex ? styles.dotActive : ''
+              }`}
+              onClick={() => goToSlide(index)}
+              aria-label={`Ir para imagem ${index + 1}`}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Indicador de scroll */}
+      <div className={styles.scrollIndicator}>
+        <span />
       </div>
     </section>
   )

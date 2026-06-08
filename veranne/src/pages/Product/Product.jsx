@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Layout from '../../components/Layout/Layout.jsx'
 import { useProductsContext } from '../../context/ProductsContext.jsx'
 import { useCart } from '../../context/CartContext.jsx'
+import { useFavorites } from '../../context/FavoritesContext.jsx'
 import Badge from '../../components/ui/Badge/Badge.jsx'
 import ProductCard from '../../components/ProductCard/ProductCard.jsx'
 import { Confetti } from '../../components/ui/Confetti/Confetti.jsx'
@@ -24,6 +25,7 @@ export default function Product() {
   const { slug } = useParams()
   const navigate = useNavigate()
   const { addToCart } = useCart()
+  const { isFavorite, toggleFavorite } = useFavorites()
   const { getProductBySlug, getRelatedProducts } = useProductsContext()
 
   const product = useMemo(() => getProductBySlug(slug), [slug, getProductBySlug])
@@ -109,9 +111,7 @@ export default function Product() {
       ? `Últimas ${product.stock} unidades!` 
       : 'Em estoque'
 
-  function onAddToCart() {
-    if (!product || isSoldOut) return
-
+  function validateSelection() {
     let hasError = false
     if (product.sizes?.length > 0 && !selectedSize) {
       setSizeError(true)
@@ -123,8 +123,12 @@ export default function Product() {
       setTimeout(() => setColorError(false), 600)
       hasError = true
     }
+    return !hasError
+  }
 
-    if (hasError) return
+  function onAddToCart() {
+    if (!product || isSoldOut) return
+    if (!validateSelection()) return
 
     addToCart(product, selectedSize || null, selectedColor || null)
     
@@ -137,15 +141,21 @@ export default function Product() {
     }, 2500)
   }
 
-  const waText = 
-    `Olá! Tenho interesse no produto:\n\n` +
-    `*${product.name}*\n` +
-    `Cor: ${selectedColor?.name || 'Não especificada'}\n` +
-    `Tamanho: ${selectedSize || 'Não especificado'}\n` +
-    `Valor: R$ ${product.price.toFixed(2).replace('.', ',')}\n\n` +
-    `Gostaria de finalizar minha compra!`
+  function onWhatsAppClick() {
+    if (!product || isSoldOut) return
+    if (!validateSelection()) return
 
-  const whatsappLink = buildWhatsAppLink({ phone: config.whatsappNumber, text: waText })
+    const waText = 
+      `Olá! Tenho interesse no produto:\n\n` +
+      `*${product.name}*\n` +
+      `Cor: ${selectedColor?.name || 'Não especificada'}\n` +
+      `Tamanho: ${selectedSize || 'Não especificado'}\n` +
+      `Valor: R$ ${product.price.toFixed(2).replace('.', ',')}\n\n` +
+      `Gostaria de finalizar minha compra!`
+  
+    const whatsappLink = buildWhatsAppLink({ phone: config.whatsappNumber, text: waText })
+    window.open(whatsappLink, '_blank', 'noopener,noreferrer')
+  }
 
   return (
     <Layout>
@@ -311,12 +321,21 @@ export default function Product() {
                 {isSoldOut ? 'Esgotado' : 'Adicionar ao Carrinho'}
               </button>
 
-              <a className={styles.whatsappButton} href={whatsappLink} target="_blank" rel="noreferrer">
+              <button 
+                type="button" 
+                className={styles.whatsappButton} 
+                onClick={onWhatsAppClick}
+                disabled={isSoldOut}
+              >
                 Comprar via WhatsApp
-              </a>
+              </button>
               
-              <button type="button" className={styles.favoriteButton}>
-                ♡ Favoritar
+              <button 
+                type="button" 
+                className={styles.favoriteButton}
+                onClick={() => toggleFavorite(product)}
+              >
+                {isFavorite(product.id) ? '♥ Favoritado' : '♡ Favoritar'}
               </button>
             </div>
 

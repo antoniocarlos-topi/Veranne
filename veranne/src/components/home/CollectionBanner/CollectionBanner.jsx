@@ -1,62 +1,62 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import styles from './CollectionBanner.module.css'
+import { Link } from 'react-router-dom'
+import { useHomepage } from '../../../context/HomepageContext'
 import { useScrollReveal } from '../../../hooks/useScrollReveal.js'
-import { useHomepage } from '../../../context/HomepageContext.jsx'
+import styles from './CollectionBanner.module.css'
 
 export function CollectionBanner() {
-  const navigate = useNavigate()
   const [refLeft, isVisibleLeft] = useScrollReveal()
   const [refRight, isVisibleRight] = useScrollReveal()
   const { homepage } = useHomepage()
   const { banner1, banner2 } = homepage
 
+  const banners = [
+    { data: banner1, ref: refLeft, visible: isVisibleLeft, hiddenClass: styles.hiddenLeft },
+    { data: banner2, ref: refRight, visible: isVisibleRight, hiddenClass: styles.hiddenRight },
+  ]
+
   return (
     <section className={styles.section} aria-label="Coleções em destaque">
       <div className={styles.grid}>
-        {/* Banner esquerdo — entra da esquerda */}
-        <button
-          ref={refLeft}
-          type="button"
-          className={`${styles.banner} ${isVisibleLeft ? styles.visibleX : styles.hiddenLeft}`}
-          onClick={() => navigate('/loja?featured=true')}
-          aria-label="Explorar coleção Ouro"
-        >
-          <div
-            className={styles.bg}
-            style={{
-              backgroundImage: `url(${banner1.imageUrl})`,
-            }}
-          />
-          <div className={styles.overlay} />
-          <div className={styles.content}>
-            <div className={styles.kicker}>{banner1.title}</div>
-            <div className={styles.title}>{banner1.subtitle}</div>
-            <div className={styles.link}>Explorar →</div>
-          </div>
-        </button>
+        {banners.map((item, index) => (
+          <Link
+            key={index}
+            ref={item.ref}
+            to={item.data.link || '/loja'}
+            className={`${styles.banner} ${item.visible ? styles.visibleX : item.hiddenClass}`}
+          >
+            {/* Imagem de fundo */}
+            <div
+              className={styles.bg}
+              style={{
+                backgroundImage: item.data.imageUrl
+                  ? `url(${item.data.imageUrl})`
+                  : 'none',
+                background: !item.data.imageUrl
+                  ? '#F5F5F5' : undefined
+              }}
+            />
 
-        {/* Banner direito — entra da direita */}
-        <button
-          ref={refRight}
-          type="button"
-          className={`${styles.banner} ${isVisibleRight ? styles.visibleX : styles.hiddenRight}`}
-          onClick={() => navigate('/loja?featured=true')}
-          aria-label="Explorar coleção Prata"
-        >
-          <div
-            className={styles.bg}
-            style={{
-              backgroundImage: `url(${banner2.imageUrl})`,
-            }}
-          />
-          <div className={styles.overlay} />
-          <div className={styles.content}>
-            <div className={styles.kicker}>{banner2.title}</div>
-            <div className={styles.title}>{banner2.subtitle}</div>
-            <div className={styles.link}>Explorar →</div>
-          </div>
-        </button>
+            {/* Overlay */}
+            <div className={styles.overlay} />
+
+            {/* Conteúdo */}
+            <div className={styles.content}>
+              <span className={styles.kicker}>
+                Coleção
+              </span>
+              <h3 className={styles.title}>
+                {item.data.title}
+              </h3>
+              <p className={styles.subtitle}>
+                {item.data.subtitle}
+              </p>
+              <span className={styles.link}>
+                Explorar →
+              </span>
+            </div>
+          </Link>
+        ))}
       </div>
     </section>
   )

@@ -265,6 +265,39 @@ export async function removeFavorite(userId, productId) {
 
 // ── STORAGE — Upload de imagens ───────────────────────────
 
+// Upload de imagem de banner
+export async function uploadBannerImage(file, bannerType) {
+  // bannerType: 'hero', 'banner1', 'banner2', 'categories'
+  const ext      = file.name.split('.').pop().toLowerCase()
+  const allowed  = ['jpg', 'jpeg', 'png', 'webp']
+
+  if (!allowed.includes(ext)) {
+    throw new Error('Formato não suportado. Use JPG, PNG ou WebP.')
+  }
+  if (file.size > 10 * 1024 * 1024) {
+    throw new Error('Imagem deve ter no máximo 10MB.')
+  }
+
+  const filename = `banners/${bannerType}/${Date.now()}_${Math.random()
+    .toString(36).slice(2)}.${ext}`
+
+  const { error } = await supabase.storage
+    .from('veranne-images')
+    .upload(filename, file, {
+      cacheControl: '3600',
+      upsert: false,
+      contentType: file.type,
+    })
+
+  if (error) throw error
+
+  const { data } = supabase.storage
+    .from('veranne-images')
+    .getPublicUrl(filename)
+
+  return data.publicUrl
+}
+
 export async function uploadImage(file, folder = 'products') {
   const ext      = file.name.split('.').pop()
   const filename = `${folder}/${Date.now()}_${Math.random()

@@ -6,6 +6,7 @@ import { FeaturedSection } from '../../components/home/FeaturedSection/FeaturedS
 import { CollectionBanner } from '../../components/home/CollectionBanner/CollectionBanner.jsx'
 import { BenefitsSection } from '../../components/home/BenefitsSection/BenefitsSection.jsx'
 import { TestimonialsSection } from '../../components/home/TestimonialsSection/TestimonialsSection.jsx'
+import { AllProductsSection } from '../../components/home/AllProductsSection/AllProductsSection.jsx'
 import { NewsletterSection } from '../../components/home/NewsletterSection/NewsletterSection.jsx'
 
 export default function Home() {
@@ -17,6 +18,7 @@ export default function Home() {
       <CollectionBanner />
       <BenefitsSection />
       <TestimonialsSection />
+      <AllProductsSection />
       <NewsletterSection />
     </Layout>
   )

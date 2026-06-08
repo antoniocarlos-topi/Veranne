@@ -52,6 +52,9 @@
   cursor: pointer;
   min-height: 260px;
   text-align: left;
+  text-decoration: none;
+  color: #fff;
+  display: block;
 }
 
 .bg {
@@ -99,6 +102,13 @@
   font-size: 1.6rem;
   font-weight: 400;
   line-height: 1.15;
+}
+
+.subtitle {
+  margin-top: var(--space-2);
+  font-size: 0.85rem;
+  opacity: 0.85;
+  line-height: 1.4;
 }
 
 .link {

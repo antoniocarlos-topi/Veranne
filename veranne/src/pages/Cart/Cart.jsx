@@ -83,7 +83,7 @@ export default function Cart() {
 
     const total = computed.finalTotal.toFixed(2).replace('.', ',')
 
-    let msg = `Olá! Gostaria de finalizar meu pedido na ${config.storeName}:\n\n` +
+    let msg = `Olá! Gostaria de finalizar meu pedido na Veranne:\n\n` +
       lines.join('\n')
 
     if (appliedCoupon) {

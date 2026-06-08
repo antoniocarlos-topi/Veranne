@@ -4,20 +4,20 @@ import styles from './CategoriesSection.module.css'
 import { CATEGORIES } from '../../../data/products.js'
 import { useScrollReveal } from '../../../hooks/useScrollReveal.js'
 import { useStaggerReveal } from '../../../hooks/useStaggerReveal.js'
-
-const categoryImages = {
-  aneis: 'https://images.unsplash.com/photo-1603561591411-07134e71a2a9?w=600&q=80',
-  colares: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80',
-  pulseiras: 'https://images.unsplash.com/photo-1573408301185-9519f94815b1?w=600&q=80',
-  brincos: 'https://images.unsplash.com/photo-1589128777073-263566ae5e4d?w=600&q=80',
-}
+import { useHomepage } from '../../../context/HomepageContext.jsx'
 
 export function CategoriesSection() {
   const navigate = useNavigate()
   const [titleRef, titleVisible] = useScrollReveal()
   const [gridRef, gridVisible] = useStaggerReveal()
+  const { homepage } = useHomepage()
 
-  const cats = useMemo(() => CATEGORIES.map(c => ({ ...c, img: categoryImages[c.slug] })), [])
+  const cats = useMemo(() => {
+    return CATEGORIES.map(c => ({
+      ...c,
+      img: homepage.categories?.[c.slug]?.imageUrl || ''
+    }))
+  }, [homepage.categories])
 
   return (
     <section className={styles.section} aria-label="Categorias">

@@ -12,6 +12,7 @@ export const CATEGORIES = [
   { id: 'colares', label: 'Colares', slug: 'colares' },
   { id: 'pulseiras', label: 'Pulseiras', slug: 'pulseiras' },
   { id: 'brincos', label: 'Brincos', slug: 'brincos' },
+  { id: 'conjuntos', label: 'Conjuntos', slug: 'conjuntos' },
 ]
 
 export const products = [
