@@ -20,9 +20,9 @@ export default function CouponsManager() {
     code: '',
     type: 'percent',
     value: '',
-    minOrder: '',
-    maxUses: '',
-    expiryDate: '',
+    min_order: '',
+    usage_limit: '',
+    expires_at: '',
   })
   const [errors, setErrors] = useState({})
   const [toast, setToast] = useState({ show: false, message: '' })
@@ -60,29 +60,36 @@ export default function CouponsManager() {
     return Object.keys(newErrors).length === 0
   }
 
-  function handleCreate() {
+  async function handleCreate() {
     if (!validate()) return
 
-    addCoupon({
-      code: formData.code.trim().toUpperCase(),
-      type: formData.type,
-      value: Number(formData.value),
-      minOrder: formData.minOrder ? Number(formData.minOrder) : null,
-      maxUses: formData.maxUses ? Number(formData.maxUses) : null,
-      expiryDate: formData.expiryDate || null,
-    })
-
-    setToast({ show: true, message: '✅ Cupom criado!' })
-    setFormData({
-      code: '',
-      type: 'percent',
-      value: '',
-      minOrder: '',
-      maxUses: '',
-      expiryDate: '',
-    })
-    setErrors({})
-    setTimeout(() => setToast({ show: false, message: '' }), 3000)
+    try {
+      console.log('Tentando criar cupom:', formData)
+      const saved = await addCoupon({
+        code: formData.code.trim().toUpperCase(),
+        type: formData.type,
+        value: Number(formData.value),
+        min_order: formData.min_order ? Number(formData.min_order) : null,
+        usage_limit: formData.usage_limit ? Number(formData.usage_limit) : null,
+        expires_at: formData.expires_at || null,
+      })
+      console.log('Cupom criado:', saved)
+      setToast({ show: true, message: '✅ Cupom criado!' })
+      setFormData({
+        code: '',
+        type: 'percent',
+        value: '',
+        min_order: '',
+        usage_limit: '',
+        expires_at: '',
+      })
+      setErrors({})
+    } catch (err) {
+      console.error('Erro ao criar cupom:', err)
+      setToast({ show: true, message: '❌ Erro: ' + err.message })
+    } finally {
+      setTimeout(() => setToast({ show: false, message: '' }), 3000)
+    }
   }
 
   function handleToggleActive(coupon) {
@@ -154,15 +161,15 @@ export default function CouponsManager() {
                         )}
                       </td>
                       <td>
-                        {coupon.minOrder
-                          ? `R$ ${formatBRL(coupon.minOrder)}`
+                        {coupon.min_order
+                          ? `R$ ${formatBRL(coupon.min_order)}`
                           : '—'}
                       </td>
                       <td>
-                        {coupon.usageCount}
-                        {coupon.maxUses ? `/${coupon.maxUses}` : ''}
+                        {coupon.usage_count || 0}
+                        {coupon.usage_limit ? `/${coupon.usage_limit}` : ''}
                       </td>
-                      <td>{formatDate(coupon.expiryDate)}</td>
+                      <td>{formatDate(coupon.expires_at)}</td>
                       <td>
                         <label className={styles.switch}>
                           <input
@@ -273,8 +280,8 @@ export default function CouponsManager() {
                   step="0.01"
                   min="0"
                   className={styles.input}
-                  value={formData.minOrder}
-                  onChange={(e) => handleChange('minOrder', e.target.value)}
+                  value={formData.min_order}
+                  onChange={(e) => handleChange('min_order', e.target.value)}
                   placeholder="Sem mínimo"
                 />
               </div>
@@ -284,8 +291,8 @@ export default function CouponsManager() {
               <label className={styles.label}>Limite de Usos (opcional)</label>
               <input
                 className={styles.input}
-                value={formData.maxUses}
-                onChange={(e) => handleChange('maxUses', e.target.value)}
+                value={formData.usage_limit}
+                onChange={(e) => handleChange('usage_limit', e.target.value)}
                 placeholder="Ilimitado"
                 type="number"
                 min="1"
@@ -297,8 +304,8 @@ export default function CouponsManager() {
               <input
                 type="date"
                 className={styles.input}
-                value={formData.expiryDate}
-                onChange={(e) => handleChange('expiryDate', e.target.value)}
+                value={formData.expires_at}
+                onChange={(e) => handleChange('expires_at', e.target.value)}
               />
             </div>
           </div>

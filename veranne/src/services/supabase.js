@@ -97,6 +97,17 @@ function toSnakeCase(obj) {
   return result
 }
 
+// Converte um objeto com chaves snake_case para camelCase
+function toCamelCase(obj) {
+  if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return obj
+  const result = {}
+  for (const key of Object.keys(obj)) {
+    const camelKey = key.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase())
+    result[camelKey] = obj[key]
+  }
+  return result
+}
+
 // ── PRODUTOS ─────────────────────────────────────────────
 
 export async function fetchProductBySlug(slug) {
@@ -112,11 +123,17 @@ export async function fetchProductBySlug(slug) {
 export async function insertProduct(product) {
   const { data, error } = await supabase
     .from('products')
-    .insert([toSnakeCase(product)])
+    .upsert([toSnakeCase(product)], { 
+      onConflict: 'slug',
+      ignoreDuplicates: true 
+    })
     .select()
-    .maybeSingle()
+    .single()
+  
+  // Ignorar erro de duplicata silenciosamente
+  if (error && error.code === '23505') return product
   if (error) throw error
-  return data
+  return toCamelCase(data)
 }
 
 export async function updateProductById(id, updates) {

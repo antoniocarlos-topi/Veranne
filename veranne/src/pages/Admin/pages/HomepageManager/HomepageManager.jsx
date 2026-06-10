@@ -30,15 +30,17 @@ export default function HomepageManager() {
   const [instagramLink, setInstagramLink] = useState(homepage.instagramLink || '')
   const [tiktokLink,    setTiktokLink]    = useState(homepage.tiktokLink || '')
   
-  const [categories, setCategories] = useState(
-    homepage.categories || {
-      aneis: { imageUrl: '' },
-      colares: { imageUrl: '' },
-      pulseiras: { imageUrl: '' },
-      brincos: { imageUrl: '' },
-      conjuntos: { imageUrl: '' },
+  const [categoryImages, setCategoryImages] = useState(
+    homepage.categoryImages || {
+      todos: '',
+      aneis: '',
+      colares: '',
+      pulseiras: '',
+      brincos: '',
+      conjuntos: '',
     }
   )
+  const [allCategoriesImage, setAllCategoriesImage] = useState(homepage.allCategoriesImage || '')
 
   // Sync with homepage data
   useEffect(() => {
@@ -52,13 +54,15 @@ export default function HomepageManager() {
     setWhatsappLink(homepage.whatsappLink || '')
     setInstagramLink(homepage.instagramLink || '')
     setTiktokLink(homepage.tiktokLink || '')
-    setCategories(homepage.categories || {
-      aneis: { imageUrl: '' },
-      colares: { imageUrl: '' },
-      pulseiras: { imageUrl: '' },
-      brincos: { imageUrl: '' },
-      conjuntos: { imageUrl: '' },
+    setCategoryImages(homepage.categoryImages || {
+      todos: '',
+      aneis: '',
+      colares: '',
+      pulseiras: '',
+      brincos: '',
+      conjuntos: '',
     })
+    setAllCategoriesImage(homepage.allCategoriesImage || '')
   }, [homepage])
 
   // Upload de imagem genérico
@@ -122,7 +126,8 @@ export default function HomepageManager() {
         featuredIds,
         banner1,
         banner2,
-        categories,
+        categoryImages,
+        allCategoriesImage,
         whatsappLink,
         instagramLink,
         tiktokLink,
@@ -370,8 +375,9 @@ export default function HomepageManager() {
         </p>
 
         <div className={styles.grid}>
-          {['aneis', 'colares', 'pulseiras', 'brincos', 'conjuntos'].map((catKey) => {
+          {['todos', 'aneis', 'colares', 'pulseiras', 'brincos', 'conjuntos'].map((catKey) => {
             const labelMap = {
+              todos: 'Todas as Categorias',
               aneis: 'Anéis',
               colares: 'Colares',
               pulseiras: 'Pulseiras',
@@ -382,21 +388,15 @@ export default function HomepageManager() {
               <div key={catKey} className={styles.formCard}>
                 <ImageUploadField
                   label={`Imagem - ${labelMap[catKey]}`}
-                  value={categories[catKey]?.imageUrl || ''}
+                  value={categoryImages[catKey] || ''}
                   uploadType={`cat-${catKey}`}
                   uploading={uploading[`cat-${catKey}`]}
                   onUrlChange={(url) =>
-                    setCategories((prev) => ({
-                      ...prev,
-                      [catKey]: { ...prev[catKey], imageUrl: url },
-                    }))
+                    setCategoryImages((prev) => ({ ...prev, [catKey]: url }))
                   }
                   onFileChange={(file) =>
                     handleImageUpload(file, 'categories', (url) =>
-                      setCategories((prev) => ({
-                        ...prev,
-                        [catKey]: { ...prev[catKey], imageUrl: url },
-                      }))
+                      setCategoryImages((prev) => ({ ...prev, [catKey]: url }))
                     )
                   }
                 />

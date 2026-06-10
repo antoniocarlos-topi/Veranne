@@ -4,14 +4,7 @@ import { useProductsContext } from '../../../../context/ProductsContext'
 import { uploadImage } from '../../../../services/supabase'
 import Toast from '../../../../components/ui/Toast/Toast'
 import styles from './ProductForm.module.css'
-
-const CATEGORIES = [
-  { value: '', label: 'Selecione...' },
-  { value: 'aneis', label: 'Anéis' },
-  { value: 'colares', label: 'Colares' },
-  { value: 'pulseiras', label: 'Pulseiras' },
-  { value: 'brincos', label: 'Brincos' },
-]
+import { CATEGORIES } from '../../../../data/products.js'
 
 const INSTALLMENTS = Array.from({ length: 12 }, (_, i) => ({
   value: i + 1,
@@ -239,8 +232,9 @@ export default function ProductForm() {
                   value={formData.category}
                   onChange={(e) => handleChange('category', e.target.value)}
                 >
-                  {CATEGORIES.map((c) => (
-                    <option key={c.value} value={c.value}>
+                  <option value="">Selecione...</option>
+                  {CATEGORIES.filter(c => c.id !== 'todos').map((c) => (
+                    <option key={c.id} value={c.slug}>
                       {c.label}
                     </option>
                   ))}

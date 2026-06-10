@@ -25,10 +25,7 @@ function CartIcon() {
 export default function Cart() {
   const navigate = useNavigate()
   const { 
-    items, 
-    subtotal, 
-    totalPrice, 
-    discount: contextDiscount,
+    items,
     appliedCoupon, 
     setAppliedCoupon,
     clearCart, 
@@ -43,13 +40,36 @@ export default function Cart() {
   const [couponCode, setCouponCode] = useState(appliedCoupon?.code || '')
   const [couponError, setCouponError] = useState('')
 
+  const localSubtotal = items.reduce((acc, item) => acc + ((item.product?.price || 0) * (item.quantity || 1)), 0)
+
+  // Re-validate coupon when subtotal changes
+  useEffect(() => {
+    if (appliedCoupon) {
+      const result = validateCoupon(appliedCoupon.code, localSubtotal)
+      if (!result.valid) {
+        setAppliedCoupon(null)
+        setCouponError(`O cupom ${appliedCoupon.code} foi removido: ${result.message}`)
+      }
+    }
+  }, [localSubtotal, appliedCoupon, validateCoupon, setAppliedCoupon])
+
+  const localDiscount = appliedCoupon ? (() => {
+    const val = Number(appliedCoupon.value || 0)
+    if (appliedCoupon.type === 'percent') {
+      return localSubtotal * (val / 100)
+    }
+    return Math.min(val, localSubtotal)
+  })() : 0
+  
+  const localTotal = Math.max(0, localSubtotal - localDiscount)
+
   function handleApplyCoupon() {
     setCouponError('')
     if (!couponCode.trim()) {
       setAppliedCoupon(null)
       return
     }
-    const result = validateCoupon(couponCode, subtotal || 0)
+    const result = validateCoupon(couponCode, localSubtotal)
     if (!result.valid) {
       setCouponError(result.message)
       setAppliedCoupon(null)
@@ -60,44 +80,46 @@ export default function Cart() {
 
   const computed = useMemo(() => {
     const totalItems = items.reduce((sum, it) => sum + (it.quantity || 0), 0)
-    const remaining = Math.max(0, config.freeShippingAbove - subtotal)
-    const progress = config.freeShippingAbove <= 0 ? 1 : Math.min(1, subtotal / config.freeShippingAbove)
+    const remaining = Math.max(0, config.freeShippingAbove - localSubtotal)
+    const progress = config.freeShippingAbove <= 0 ? 1 : Math.min(1, localSubtotal / config.freeShippingAbove)
 
     return {
       totalItems,
-      subtotal,
       remaining,
       progress,
-      qualifiesFreeShipping: subtotal >= config.freeShippingAbove,
-      finalTotal: totalPrice,
+      qualifiesFreeShipping: localSubtotal >= config.freeShippingAbove,
     }
-  }, [items, subtotal, totalPrice, config.freeShippingAbove])
+  }, [items, localSubtotal, config.freeShippingAbove])
 
   const whatsappMessage = useMemo(() => {
     const safeItems = items || []
-    const lines = safeItems.map(it => {
-      const name = it.product?.name || 'Produto'
-      const size = it.selectedSize || 'Não especificado'
-      const color = it.selectedColor?.name || 'Não especificada'
-      const qty = it.quantity || 1
-      const lineTotal = (Number(it.product?.price || 0) * qty).toFixed(2).replace('.', ',')
-      return `• ${name} (Tam: ${size} | Cor: ${color}) x${qty} — R$ ${lineTotal}`
-    })
+    const itemsList = safeItems.map(item => {
+      const itemPrice = Number(item.product?.price || 0)
+      const qty = Number(item.quantity || 1)
+      const lineTotal = itemPrice * qty
+      return `• ${item.product?.name || 'Produto'}` +
+        (item.selectedSize ? ` | Tamanho: ${item.selectedSize}` : '') +
+        (item.selectedColor ? ` | Cor: ${item.selectedColor.name}` : '') +
+        ` | Qtd: ${qty}` +
+        ` | R$ ${lineTotal.toFixed(2).replace('.', ',')}`
+    }).join('\n')
 
-    const total = computed.finalTotal.toFixed(2).replace('.', ',')
-
-    let msg = `Olá! Gostaria de finalizar meu pedido na Veranne:\n\n` +
-      lines.join('\n')
-
-    if (appliedCoupon) {
-      msg += `\n\nCupom aplicado: ${appliedCoupon.code} (-R$ ${contextDiscount.toFixed(2).replace('.', ',')})`
-    }
+    const subtotalLine = `Subtotal: R$ ${localSubtotal.toFixed(2).replace('.', ',')}`
     
-    msg += `\n\n*Total: R$ ${total}*` +
-      `\n\nAguardo instruções para pagamento via Pix. Obrigada!`
-      
-    return msg
-  }, [items, computed.finalTotal, appliedCoupon, contextDiscount, config.storeName])
+    const discountLine = localDiscount > 0
+      ? `Desconto (${appliedCoupon?.code}): -R$ ${localDiscount.toFixed(2).replace('.', ',')}`
+      : ''
+
+    const message =
+      `Olá! Gostaria de finalizar meu pedido na Veranne:\n\n` +
+      `${itemsList}\n\n` +
+      `${subtotalLine}\n` +
+      (discountLine ? `${discountLine}\n` : '') +
+      `Total a pagar: R$ ${localTotal.toFixed(2).replace('.', ',')}\n\n` +
+      `Aguardo instruções para pagamento via Pix. Obrigada!`
+
+    return message
+  }, [items, localSubtotal, localTotal, appliedCoupon, localDiscount])
 
   function onWhatsApp() {
     if (appliedCoupon) {
@@ -231,7 +253,7 @@ export default function Cart() {
 
                 <div className={styles.summaryRow}>
                   <div className={styles.summaryLabel}>Subtotal ({computed.totalItems} itens)</div>
-                  <div className={styles.summaryValue}>R$ {formatBRL(computed.subtotal)}</div>
+                  <div className={styles.summaryValue}>R$ {formatBRL(localSubtotal)}</div>
                 </div>
 
                 <div className={styles.shipping}>
@@ -278,7 +300,7 @@ export default function Cart() {
                   {couponError && <div className={styles.couponError}>{couponError}</div>}
                   {appliedCoupon && (
                     <div className={styles.couponSuccess}>
-                      Cupom {appliedCoupon.code} aplicado! (-R$ {formatBRL(contextDiscount)})
+                      Cupom {appliedCoupon.code} aplicado! (-R$ {formatBRL(localDiscount)})
                     </div>
                   )}
                 </div>
@@ -287,7 +309,7 @@ export default function Cart() {
 
                 <div className={styles.totalRow}>
                   <div className={styles.totalLabel}>Total</div>
-                  <div className={styles.totalValue}>R$ {formatBRL(computed.finalTotal)}</div>
+                  <div className={styles.totalValue}>R$ {formatBRL(localTotal)}</div>
                 </div>
 
                 <button type="button" className={styles.whatsBtn} onClick={onWhatsApp}>

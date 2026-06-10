@@ -264,8 +264,8 @@ export function ProductsProvider({ children }) {
   )
 
   const getByCategory = useCallback((category) => {
-    if (!category || category === 'todos') return products
-    return products.filter(p => p.category === category)
+    if (!category || category.toLowerCase() === 'todos') return products
+    return products.filter(p => p.category?.toLowerCase() === category.toLowerCase())
   }, [products])
 
   const getFeatured = useCallback(() =>

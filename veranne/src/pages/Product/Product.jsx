@@ -146,12 +146,14 @@ export default function Product() {
     if (!validateSelection()) return
 
     const waText = 
-      `Olá! Tenho interesse no produto:\n\n` +
-      `*${product.name}*\n` +
-      `Cor: ${selectedColor?.name || 'Não especificada'}\n` +
-      `Tamanho: ${selectedSize || 'Não especificado'}\n` +
-      `Valor: R$ ${product.price.toFixed(2).replace('.', ',')}\n\n` +
-      `Gostaria de finalizar minha compra!`
+      `Olá! Gostaria de finalizar meu pedido na Veranne:\n\n` +
+      `• ${product.name}` +
+      (selectedSize  ? ` | Tamanho: ${selectedSize}`        : '') +
+      (selectedColor ? ` | Cor: ${selectedColor.name}`      : '') +
+      ` | Qtd: 1` +
+      ` | R$ ${product.price.toFixed(2).replace('.', ',')}\n\n` +
+      `Total: R$ ${product.price.toFixed(2).replace('.', ',')}\n\n` +
+      `Aguardo instruções para pagamento via Pix. Obrigada!`
   
     const whatsappLink = buildWhatsAppLink({ phone: config.whatsappNumber, text: waText })
     window.open(whatsappLink, '_blank', 'noopener,noreferrer')

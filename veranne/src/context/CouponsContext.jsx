@@ -33,27 +33,23 @@ export function CouponsProvider({ children }) {
   }
 
   const addCoupon = useCallback(async (data) => {
-    const code = typeof data === 'object' ? data.code : arguments[0]
-    const type = typeof data === 'object' ? data.type : arguments[1]
-    const value = typeof data === 'object' ? data.value : arguments[2]
-    const minOrder = typeof data === 'object' ? data.minOrder : arguments[3]
-    const maxUses = typeof data === 'object' ? data.maxUses : null
-    const expiryDate = typeof data === 'object' ? data.expiryDate : null
-
-    const newCoupon = {
-      code: code.toUpperCase(),
-      type, // 'percent' | 'fixed'
-      value: Number(value),
-      min_order: Number(minOrder) || 0,
-      max_uses: maxUses ? Number(maxUses) : null,
-      expiry_date: expiryDate || null,
-      active: true,
-      usage_count: 0
+    const coupon = {
+      id:          `coup_${Date.now()}`,
+      code:        data.code.toUpperCase().trim(),
+      type:        data.type,        // 'percent' ou 'fixed'
+      value:       Number(data.value),
+      min_order:   Number(data.minOrder || data.min_order || 0),
+      usage_limit: data.usageLimit  || data.usage_limit  || null,
+      usage_count: 0,
+      expires_at:  data.expiresAt   || data.expires_at   || null,
+      active:      true,
     }
-    const saved = await insertCoupon(newCoupon)
+    const saved = await insertCoupon(coupon)
     if (saved) {
       setCoupons(prev => [saved, ...prev])
+      return saved
     }
+    throw new Error('Falha ao salvar o cupom. Nenhuma resposta do servidor.')
   }, [])
 
   const updateCoupon = useCallback(async (id, updates) => {
@@ -82,30 +78,41 @@ export function CouponsProvider({ children }) {
   // Uso no carrinho
   const validateCoupon = useCallback((code, orderTotal) => {
     if (!code) return { valid: false, message: 'Código vazio' }
-    const c = coupons.find(x => x.code === code.toUpperCase() && x.active)
+    const coupon = coupons.find(x => x.code === code.toUpperCase() && x.active)
 
-    if (!c) return { valid: false, message: 'Cupom inválido ou expirado' }
-    if (orderTotal < c.min_order) {
-      return {
-        valid: false,
-        message: `Pedido mínimo de R$ ${c.min_order.toFixed(2)}`
+    if (!coupon) return { valid: false, message: 'Cupom inválido ou inativo.' }
+
+    if (coupon.expires_at && 
+        new Date(coupon.expires_at) < new Date()) {
+      return { valid: false, message: 'Cupom expirado.' }
+    }
+    if (coupon.usage_limit !== null && 
+        coupon.usage_count >= coupon.usage_limit) {
+      return { valid: false, message: 'Limite de uso atingido.' }
+    }
+    if (coupon.min_order > 0 && 
+        orderTotal < coupon.min_order) {
+      return { 
+        valid: false, 
+        message: `Pedido mínimo de R$ ${Number(coupon.min_order)
+          .toFixed(2).replace('.', ',')} para este cupom.` 
       }
     }
 
-    const discount = c.type === 'percent'
-      ? orderTotal * (c.value / 100)
-      : Math.min(c.value, orderTotal)
+    const discount = coupon.type === 'percent'
+      ? orderTotal * (coupon.value / 100)
+      : Math.min(coupon.value, orderTotal)
 
     // O retorno usa camelCase para compatibilidade com a UI atual
     return {
       valid: true,
       discount,
       coupon: {
-        id: c.id,
-        code: c.code,
-        type: c.type,
-        value: c.value,
-        minOrder: c.min_order
+        id: coupon.id,
+        code: coupon.code,
+        type: coupon.type,
+        value: coupon.value,
+        minOrder: coupon.min_order
       }
     }
   }, [coupons])

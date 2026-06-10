@@ -13,11 +13,23 @@ export function CategoriesSection() {
   const { homepage } = useHomepage()
 
   const cats = useMemo(() => {
-    return CATEGORIES.map(c => ({
-      ...c,
-      img: homepage.categories?.[c.slug]?.imageUrl || ''
-    }))
-  }, [homepage.categories])
+    return CATEGORIES.map(c => {
+      let img = ''
+      if (c.id === 'todos') {
+        img = homepage.categoryImages?.todos || homepage.allCategoriesImage || ''
+      } else {
+        img = homepage.categoryImages?.[c.slug] || ''
+      }
+      return { ...c, img }
+    })
+  }, [homepage.categoryImages, homepage.allCategoriesImage])
+
+  function handleImgError(e) {
+    e.currentTarget.style.display = 'none'
+    // Show the fallback gradient behind
+    const wrap = e.currentTarget.closest(`.${styles.imgWrap}`)
+    if (wrap) wrap.style.background = 'linear-gradient(135deg, #1a1a1a 0%, #3a3a3a 100%)'
+  }
 
   return (
     <section className={styles.section} aria-label="Categorias">
@@ -40,7 +52,11 @@ export function CategoriesSection() {
             aria-label={`Ver categoria ${c.label}`}
           >
             <div className={styles.imgWrap}>
-              <img className={styles.img} src={c.img} alt={c.label} loading="lazy" />
+              {c.img ? (
+                <img className={styles.img} src={c.img} alt={c.label} loading="lazy" onError={handleImgError} />
+              ) : (
+                <div className={styles.imgPlaceholder} />
+              )}
               <div className={styles.imgOverlay} />
               <div className={styles.cardText}>
                 <div className={styles.cardName}>{c.label}</div>

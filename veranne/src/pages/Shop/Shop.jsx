@@ -89,7 +89,7 @@ export default function Shop() {
       if (!isNaN(max) && p.price > max) return false
       return true
     })
-  }, [category, debouncedQuery, minPrice, maxPrice])
+  }, [category, debouncedQuery, minPrice, maxPrice, getProductsByCategory, searchProducts])
 
   const sorted = useMemo(() => {
     const arr = [...base]
@@ -169,7 +169,7 @@ export default function Shop() {
               <div className={styles.filterWrap}>
                 <div className={styles.label}>Categorias</div>
                 <div className={styles.catRow}>
-                  {CATEGORIES.filter(c => c.id !== 'todos').map(c => (
+                  {CATEGORIES.map(c => (
                     <button
                       key={c.id}
                       type="button"
@@ -179,13 +179,6 @@ export default function Shop() {
                       {c.label}
                     </button>
                   ))}
-                  <button
-                    type="button"
-                    className={`${styles.catBtn} ${category === 'todos' ? styles.catActive : ''}`}
-                    onClick={() => onSelectCategory('todos')}
-                  >
-                    Todos
-                  </button>
                 </div>
               </div>
 

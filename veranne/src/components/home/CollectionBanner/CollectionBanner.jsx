@@ -25,16 +25,13 @@ export function CollectionBanner() {
             to={item.data.link || '/loja'}
             className={`${styles.banner} ${item.visible ? styles.visibleX : item.hiddenClass}`}
           >
-            {/* Imagem de fundo */}
             <div
               className={styles.bg}
-              style={{
-                backgroundImage: item.data.imageUrl
-                  ? `url(${item.data.imageUrl})`
-                  : 'none',
-                background: !item.data.imageUrl
-                  ? '#F5F5F5' : undefined
-              }}
+              style={
+                item.data?.imageUrl
+                  ? { backgroundImage: `url(${item.data.imageUrl})` }
+                  : { background: 'linear-gradient(135deg, #1a1a1a 0%, #3a3a3a 100%)' }
+              }
             />
 
             {/* Overlay */}
