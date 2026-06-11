@@ -103,7 +103,11 @@ export function ProductsProvider({ children }) {
   // ── ADMIN: operações de escrita ────────────────────────
 
   const addProduct = useCallback(async (formData) => {
-    const slug = generateSlug(formData.name)
+    let slug = generateSlug(formData.name)
+    // Garantir que o slug seja único
+    if (products.some(p => p.slug === slug)) {
+      slug = `${slug}-${Date.now().toString().slice(-4)}`
+    }
     const newProductData = {
       id:            `prod_${Date.now()}`,
       slug,

@@ -60,23 +60,31 @@ function has(v) {
 
 // Helper: merge profundo de um banner (campo a campo)
 function mergeBanner(saved, fallback) {
-  if (!saved || typeof saved !== 'object') return fallback
+  let obj = saved
+  if (typeof obj === 'string') {
+    try { obj = JSON.parse(obj) } catch (e) { /* ignorar */ }
+  }
+  if (!obj || typeof obj !== 'object') return fallback
   return {
-    imageUrl: has(saved.imageUrl) ? saved.imageUrl
-            : has(saved.image_url) ? saved.image_url
+    imageUrl: has(obj.imageUrl) ? obj.imageUrl
+            : has(obj.image_url) ? obj.image_url
             : fallback.imageUrl,
-    title:    has(saved.title)    ? saved.title    : fallback.title,
-    subtitle: has(saved.subtitle) ? saved.subtitle : fallback.subtitle,
-    link:     has(saved.link)     ? saved.link     : fallback.link,
+    title:    has(obj.title)    ? obj.title    : fallback.title,
+    subtitle: has(obj.subtitle) ? obj.subtitle : fallback.subtitle,
+    link:     has(obj.link)     ? obj.link     : fallback.link,
   }
 }
 
 // Helper: merge categoryImages chave a chave
 function mergeCategoryImages(saved, fallback) {
-  if (!saved || typeof saved !== 'object') return fallback
+  let obj = saved
+  if (typeof obj === 'string') {
+    try { obj = JSON.parse(obj) } catch (e) { /* ignorar */ }
+  }
+  if (!obj || typeof obj !== 'object') return fallback
   const merged = { ...fallback }
   for (const key of Object.keys(merged)) {
-    const val = saved[key]
+    const val = obj[key]
     if (has(val)) {
       if (typeof val === 'string') merged[key] = val
       else if (val.imageUrl) merged[key] = val.imageUrl

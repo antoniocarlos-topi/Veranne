@@ -14,7 +14,7 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState({})
-  const { login } = useAuth()
+  const { login, loginAsGuest } = useAuth()
   const navigate = useNavigate()
 
   function validate() {
@@ -33,26 +33,21 @@ export default function Login() {
     if (Object.keys(errs).length > 0) return
 
     setLoading(true)
-    await new Promise(r => setTimeout(r, 800))
 
-    const userData = {
-      email,
-      name: email.split('@')[0],
-      isGuest: false,
-      loginAt: Date.now(),
+    try {
+      await login(email, password)
+      sessionStorage.setItem('veranne_intro_seen', 'true')
+      setLoading(false)
+      navigate('/minha-conta')
+    } catch (error) {
+      setLoading(false)
+      setErrors({ email: 'E-mail ou senha incorretos' })
     }
-
-    sessionStorage.setItem('veranne_user', JSON.stringify(userData))
-    sessionStorage.setItem('veranne_intro_seen', 'true')
-    login(userData)
-    setLoading(false)
-    navigate('/minha-conta')
   }
 
   const handleGuest = () => {
-    const guestData = { name: 'Visitante', isGuest: true }
     sessionStorage.setItem('veranne_intro_seen', 'true')
-    login(guestData)
+    loginAsGuest()
     navigate('/')
   }
 

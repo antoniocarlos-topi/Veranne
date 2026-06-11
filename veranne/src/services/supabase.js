@@ -128,7 +128,7 @@ export async function insertProduct(product) {
       ignoreDuplicates: true 
     })
     .select()
-    .single()
+    .maybeSingle()
   
   // Ignorar erro de duplicata silenciosamente
   if (error && error.code === '23505') return product

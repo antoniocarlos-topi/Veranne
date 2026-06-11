@@ -15,6 +15,7 @@ const CATEGORIES = [
   { value: 'colares', label: 'Colares' },
   { value: 'pulseiras', label: 'Pulseiras' },
   { value: 'brincos', label: 'Brincos' },
+  { value: 'conjuntos', label: 'Conjuntos' },
 ]
 
 export default function ProductsList() {

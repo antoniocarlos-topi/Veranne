@@ -29,7 +29,7 @@ export function CollectionBanner() {
               className={styles.bg}
               style={
                 item.data?.imageUrl
-                  ? { backgroundImage: `url(${item.data.imageUrl})` }
+                  ? { backgroundImage: `url('${item.data.imageUrl}')` }
                   : { background: 'linear-gradient(135deg, #1a1a1a 0%, #3a3a3a 100%)' }
               }
             />

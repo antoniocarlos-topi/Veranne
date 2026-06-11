@@ -17,7 +17,7 @@ export default function Register() {
   const [termsAccepted, setTermsAccepted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState({})
-  const { login } = useAuth()
+  const { register, loginAsGuest } = useAuth()
   const navigate = useNavigate()
 
   function validate() {
@@ -40,26 +40,21 @@ export default function Register() {
     if (Object.keys(errs).length > 0) return
 
     setLoading(true)
-    await new Promise(r => setTimeout(r, 800))
 
-    const userData = {
-      email,
-      name: name.trim(),
-      isGuest: false,
-      loginAt: Date.now(),
+    try {
+      await register(email, password, name.trim())
+      sessionStorage.setItem('veranne_intro_seen', 'true')
+      setLoading(false)
+      navigate('/minha-conta')
+    } catch (error) {
+      setLoading(false)
+      setErrors({ email: error.message || 'Erro ao criar conta' })
     }
-
-    sessionStorage.setItem('veranne_user', JSON.stringify(userData))
-    sessionStorage.setItem('veranne_intro_seen', 'true')
-    login(userData)
-    setLoading(false)
-    navigate('/minha-conta')
   }
 
   const handleGuest = () => {
-    const guestData = { name: 'Visitante', isGuest: true }
     sessionStorage.setItem('veranne_intro_seen', 'true')
-    login(guestData)
+    loginAsGuest()
     navigate('/')
   }
 
